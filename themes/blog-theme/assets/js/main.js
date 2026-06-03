@@ -122,3 +122,57 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// Highlight active TOC item on scroll
+document.addEventListener("DOMContentLoaded", () => {
+  const tocSidebar = document.getElementById("toc-sidebar");
+  const postContent = document.getElementById("post-content");
+
+  if (!tocSidebar || !postContent) {
+    return;
+  }
+
+  const highlightActiveToc = () => {
+    // Get all headings in the post content
+    const headings = postContent.querySelectorAll("h2[id], h3[id], h4[id]");
+    if (headings.length === 0) return;
+
+    // Find which heading is closest to the top of the viewport
+    let activeHeading = null;
+    const scrollThreshold = 100; // pixels from top
+
+    for (const heading of headings) {
+      const rect = heading.getBoundingClientRect();
+      if (rect.top <= scrollThreshold) {
+        activeHeading = heading;
+      } else {
+        break;
+      }
+    }
+
+    // Get all TOC links
+    const tocLinks = tocSidebar.querySelectorAll("#TableOfContents a");
+
+    // Remove active class from all links
+    tocLinks.forEach((link) => {
+      link.classList.remove("active");
+    });
+
+    // Add active class to the corresponding link
+    if (activeHeading) {
+      const activeId = activeHeading.id;
+      const activeLink = tocSidebar.querySelector(
+        `#TableOfContents a[href="#${activeId}"]`
+      );
+      if (activeLink) {
+        activeLink.classList.add("active");
+      }
+    }
+  };
+
+  // Run on scroll
+  window.addEventListener("scroll", highlightActiveToc, { passive: true });
+
+  // Initial highlight
+  highlightActiveToc();
+});

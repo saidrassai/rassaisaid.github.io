@@ -453,12 +453,14 @@ details:not([open]) > summary {
 }
 
 .toc-sidebar {
-  position: absolute; /* non-sticky */
-  top: 0;
+  position: sticky;
+  top: 2rem;
   left: -280px; /* 240px width + 40px gap */
   width: 240px;
   color: #6E6D80;
   font-size: 0.95rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
 }
 
 /* Remove vertical rule and reduce indentation inside sidebar TOC */
@@ -504,6 +506,12 @@ details:not([open]) > summary {
 
 .toc-sidebar a:hover {
   color: #e11d47;
+  text-decoration: underline;
+}
+
+.toc-sidebar a.active {
+  color: #dc2626;
+  font-weight: 600;
   text-decoration: underline;
 }
 
