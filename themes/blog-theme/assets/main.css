@@ -447,37 +447,45 @@ details:not([open]) > summary {
   margin-bottom: 0.35rem;
 }
 
-/* --- Post layout with left TOC sidebar (extends outside content width) --- */
+/* --- Post layout with left TOC sidebar (Fixed & Expanded) --- */
 .post-layout {
-  position: relative;
+  display: grid;
+  /* First column handles the TOC (240px), second column dynamically scales up to a perfect 760px reading width */
+  grid-template-columns: 240px minmax(0, 760px);
+  gap: 50px;
+  align-items: start;
+  
+  /* Expands the max-width of the entire page layout so everything can breathe */
+  max-width: 1050px; 
+  margin: 0 auto;    /* Centers the entire layout on the screen */
+  padding: 0 1.5rem;
 }
 
 .toc-sidebar {
   position: sticky;
-  top: 2rem;
-  left: -280px; /* 240px width + 40px gap */
+  top: 2.5rem; /* Pins the TOC vertically to the viewport as your reader scrolls down */
   width: 240px;
   color: #6E6D80;
   font-size: 0.95rem;
-  max-height: calc(100vh - 4rem);
+  max-height: calc(100vh - 5rem);
   overflow-y: auto;
 }
 
 /* Remove vertical rule and reduce indentation inside sidebar TOC */
 .toc-sidebar #TableOfContents {
   border-left: none !important;
-  padding: 0 !important; /* remove top padding so TOC aligns to first paragraph text */
+  padding: 0 !important; /* aligns top of TOC perfectly with your first paragraph */
 }
 .toc-sidebar #TableOfContents > ul {
   margin: 0;
   padding-left: 0;
 }
 .toc-sidebar #TableOfContents ul ul {
-  margin-left: 2px !important; /* Minimal nested indent in sidebar */
+  margin-left: 12px !important; /* Clean, nested hierarchy indentation */
   padding-left: 0;
 }
 .toc-sidebar #TableOfContents li {
-  margin: 0.35rem 0; /* increased item spacing */
+  margin: 0.35rem 0; 
 }
 /* Add more separation between top-level sections (headers) */
 .toc-sidebar #TableOfContents > ul > li + li {
@@ -488,7 +496,6 @@ details:not([open]) > summary {
   display: block;
   line-height: 1.2;
 }
-/* Show all items including title/subtitle now that header is auto-rendered separately */
 
 .toc-sidebar ul {
   list-style-type: none;
@@ -517,10 +524,10 @@ details:not([open]) > summary {
 
 @media (max-width: 1024px) {
   .post-layout {
-    position: static;
+    display: block; /* Reverts to a clean, single column stack on smaller screens */
   }
   .toc-sidebar {
-    display: none; /* hide TOC on smaller screens */
+    display: none; /* Hides the sidebar gracefully on tablets/mobile devices */
   }
 }
 
