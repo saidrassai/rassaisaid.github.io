@@ -34,10 +34,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Ensures a stable, modern Node environment
+          node-version: '20'
 
       - name: Install Dart Sass
-        run: sudo npm install -g sass # Bypasses snap issues completely
+        run: sudo npm install -g sass
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -66,8 +66,7 @@ jobs:
         run: |
           hugo \
             --gc \
-            --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"          
+            --minify
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
