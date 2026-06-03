@@ -1,16 +1,5 @@
-## Development
-```bash
-hugo server -D
-```
+# saidrassai.github.io
 
-## Production
-```bash
-hugo -gc --minify --baseURL "https://nrehiew.github.io/blog/"
-```
+Personal site of Rassai Said. Notes on finance agents, dataset engineering, and model training.
 
-## CSS
-```bash
-cd themes/blog-theme
-npm install
-npm run watch
-```
+Built with [Hugo](https://gohugo.io/) using a custom blog theme inspired by [nrehiew/nrehiew.github.io](https://github.com/nrehiew/nrehiew.github.io). Deployed to GitHub Pages via `.github/workflows/hugo.yaml`.

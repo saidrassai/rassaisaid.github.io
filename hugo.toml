@@ -1,12 +1,12 @@
-baseURL = ''
+baseURL = 'https://saidrassai.github.io/'
 languageCode = 'en-us'
-title = "wh"
+title = "saidrassai"
 theme = 'blog-theme'
 googleAnalytics = "G-PCNGEYW1TG"
 
 [params]
-  defaultTheme='light'
-  math = true
+  defaultTheme = 'light'
+  math = false
 
 [markup]
   [markup.goldmark]
@@ -22,7 +22,7 @@ googleAnalytics = "G-PCNGEYW1TG"
     ordered = true
     endLevel = 4
 
-[markup.goldmark.renderer] 
+[markup.goldmark.renderer]
 unsafe = true
 
 [markup.highlight]

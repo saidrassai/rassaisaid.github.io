@@ -8,3 +8,6 @@ tmp
 hugo.exe
 hugo.linux
 hugo.darwin
+# Build outputs
+/public/
+/resources/_gen/
