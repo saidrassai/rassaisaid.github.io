@@ -1,0 +1,7 @@
+{{- $lang := .Attributes.lang -}}
+{{- if eq $lang "mermaid" -}}
+  <div class="mermaid">{{ .Inner | safeHTML }}</div>
+{{- else -}}
+  {{- $highlighted := . | transform.HighlightCodeBlock -}}
+  {{- $highlighted -}}
+{{- end -}}

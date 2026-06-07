@@ -12,7 +12,7 @@ body {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 17px;
   line-height: 26px;
-  color: #021117;              /* ← changed to match paperswithcode.co */
+  color: #021117;              /* ← */
   background-color: #faf8f4;   /* ← added: exact background color from target site */
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -90,7 +90,7 @@ p {
 }
 
 pre {
-  background-color: #ffffff !important;
+  background-color: #262620 !important; /* Updated to dark background */
   padding: 1rem !important;
   border-radius: 0.5rem !important;
   font-size: 0.80rem !important;
@@ -111,9 +111,9 @@ pre {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.04);
-  color: #444;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.1); /* Adjusted for dark background */
+  color: #f8f8f2;                       /* Adjusted for dark background */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Adjusted for dark background */
   border-radius: 6px;
   padding: 0;
   opacity: 0.8;
@@ -128,9 +128,9 @@ pre {
 }
 
 .copy-btn.copied {
-  color: #1a7f37;
-  border-color: rgba(26, 127, 55, 0.25);
-  background: rgba(26, 127, 55, 0.06);
+  color: #50fa7b; /* Adjusted for dark background */
+  border-color: rgba(80, 250, 123, 0.4);
+  background: rgba(80, 250, 123, 0.15);
 }
 /* 
 .dark .highlight pre {
@@ -150,7 +150,8 @@ p code {
   padding: 0.15rem !important;
   border-radius: 0.25rem !important;
   font-size: 0.9rem !important;
-  background-color: #DCDEE5 !important;
+  background-color: #262620 !important;
+  color: #f8f8f2 !important; /* Added: Light text for inline code readability */
 }
 
 pre {
@@ -164,6 +165,7 @@ pre {
 /* Slightly tighter code block line height */
 pre, pre code {
   line-height: 1.55;
+  color: #f8f8f2 !important; /* Added: Light text color for dark background */
 }
 
 sup {
@@ -227,79 +229,6 @@ img {
   margin-right: calc(50% - var(--post-figure-wide) / 2);
 }
 
-.post-table {
-  margin: 1.35rem 0 1rem;
-}
-
-.post-table__wrap {
-  overflow-x: auto;
-  border: 1px solid rgba(40, 40, 40, 0.08);
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.045);
-}
-
-.post-table table {
-  width: 100%;
-  min-width: 680px;
-  margin: 0;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 0.87rem;
-  line-height: 1.3;
-  font-variant-numeric: tabular-nums;
-}
-
-.post-table th,
-.post-table td {
-  padding: 0.48rem 0.8rem;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid rgba(40, 40, 40, 0.08);
-}
-
-.post-table thead th {
-  background: #f7f3ef;
-  color: rgba(40, 40, 40, 0.72);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.post-table thead th:not(:first-child),
-.post-table tbody td:not(:first-child) {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.post-table tbody tr:not(.post-table__section):hover {
-  background: rgba(40, 40, 40, 0.025);
-}
-
-.post-table tbody:last-of-type tr:last-child td {
-  border-bottom: none;
-}
-
-.post-table__section th {
-  padding-top: 0.42rem;
-  padding-bottom: 0.42rem;
-  background: #fff7f2;
-  color: #202020;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-transform: none;
-}
-
-.post-table figcaption {
-  margin-top: 0.45rem;
-  font-size: 0.78rem;
-  line-height: 1.4;
-  color: rgba(40, 40, 40, 0.72);
-  text-align: center;
-}
-
 @media (max-width: 640px) {
   .post-figure {
     margin: 1.2rem auto 0.95rem;
@@ -314,23 +243,236 @@ img {
     margin-left: 0;
     margin-right: 0;
   }
+}
 
-  .post-table {
-    margin: 1.2rem 0 0.9rem;
+/* =========================================================================
+   TABLE STYLING
+   -------------------------------------------------------------------------
+   Two layers:
+   1. Bare markdown tables inside `article#post-content` get an automatic
+      polished look (rounded card, sticky header, zebra rows, hover).
+   2. The opt-in `.post-table` figure (used when you want a caption /
+      section rows / scrollable wrapper) inherits and refines that look.
+   ========================================================================= */
+
+/* Shared design tokens for tables */
+:root {
+  --tbl-bg: #ffffff;
+  --tbl-border: rgba(40, 40, 40, 0.09);
+  --tbl-border-strong: rgba(40, 40, 40, 0.16);
+  --tbl-head-bg: #f5efe7;
+  --tbl-head-text: #4a443c;
+  --tbl-section-bg: #fbf3eb;
+  --tbl-row-alt: #fcfaf7;
+  --tbl-row-hover: #f4ecdf;
+  --tbl-text: #1f1d1a;
+  --tbl-muted: rgba(40, 40, 40, 0.62);
+  --tbl-shadow: 0 8px 26px rgba(0, 0, 0, 0.045);
+  --tbl-radius: 14px;
+}
+
+/* Wrapper that gives the card look + horizontal scroll on narrow screens.
+   Applied automatically to bare <table> in post bodies. */
+.post-table,
+.post-content table-wrap,
+article#post-content > table {
+  display: block;
+  margin: 1.5rem 0 1.2rem;
+  width: 100%;
+}
+
+/* The scroll container around the table.
+   For `figure.post-table`, the inner div carries .post-table__wrap.
+   For bare markdown tables, we wrap via CSS-only on the table itself. */
+.post-table__wrap,
+article#post-content > table {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--tbl-bg);
+  border: 1px solid var(--tbl-border);
+  border-radius: var(--tbl-radius);
+  box-shadow: var(--tbl-shadow);
+  /* Fade edges to hint horizontal scroll */
+  background:
+    linear-gradient(to right, var(--tbl-bg) 30%, rgba(255, 255, 255, 0)) left center / 24px 100% no-repeat,
+    linear-gradient(to left,  var(--tbl-bg) 30%, rgba(255, 255, 255, 0)) right center / 24px 100% no-repeat,
+    var(--tbl-bg);
+  background-attachment: local, local, scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(40, 40, 40, 0.25) transparent;
+}
+
+.post-table__wrap::-webkit-scrollbar,
+article#post-content > table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.post-table__wrap::-webkit-scrollbar-thumb,
+article#post-content > table::-webkit-scrollbar-thumb {
+  background: rgba(40, 40, 40, 0.2);
+  border-radius: 999px;
+}
+
+.post-table__wrap::-webkit-scrollbar-track,
+article#post-content > table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* The actual table */
+.post-table table,
+article#post-content > table {
+  width: 100%;
+  min-width: 560px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: var(--tbl-text);
+}
+
+/* Reset the wrapper-level display:block from the previous rule so the
+   inner table still behaves as a table. */
+article#post-content > table {
+  display: table;
+}
+
+/* Cells */
+.post-table th,
+.post-table td,
+article#post-content > table th,
+article#post-content > table td {
+  padding: 0.55rem 0.95rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--tbl-border);
+}
+
+/* Header row */
+.post-table thead th,
+article#post-content > table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--tbl-head-bg);
+  color: var(--tbl-head-text);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--tbl-border-strong);
+  white-space: nowrap;
+}
+
+/* Body rows: zebra striping + hover */
+.post-table tbody tr:nth-child(even),
+article#post-content > table tbody tr:nth-child(even) {
+  background: var(--tbl-row-alt);
+}
+
+.post-table tbody tr,
+article#post-content > table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.post-table tbody tr:hover,
+article#post-content > table tbody tr:hover {
+  background: var(--tbl-row-hover);
+}
+
+/* Remove bottom border on the very last row */
+.post-table tbody:last-of-type tr:last-child td,
+article#post-content > table tbody:last-of-type tr:last-child td {
+  border-bottom: none;
+}
+
+/* Numeric alignment: right-align columns that look numeric (all cells
+   consist only of digits, %, $, ., commas, spaces, k/m/b suffixes, etc.). */
+.post-table td.is-numeric,
+article#post-content > table td.is-numeric {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Markdown typically uses pipes with text; treat inline `code` inside a
+   cell like a subtle pill so it doesn't look like a wall of code. */
+.post-table td code,
+.post-table th code,
+article#post-content > table td code,
+article#post-content > table th code {
+  background: rgba(40, 40, 40, 0.06);
+  color: #2a2a2a;
+  padding: 0.05rem 0.32rem;
+  border-radius: 4px;
+  font-size: 0.82em;
+}
+
+/* Section header rows (used by the opt-in `.post-table` figure) */
+.post-table__section th {
+  background: var(--tbl-section-bg);
+  color: #202020;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-bottom: 1px solid var(--tbl-border);
+}
+
+/* Caption (e.g. figure.post-table figcaption) */
+.post-table figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--tbl-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive: tighten spacing and let header become a less wide block */
+@media (max-width: 640px) {
+  .post-table,
+  article#post-content > table {
+    margin: 1.15rem 0 0.9rem;
+    border-radius: 12px;
   }
 
   .post-table th,
-  .post-table td {
+  .post-table td,
+  article#post-content > table th,
+  article#post-content > table td {
     padding: 0.45rem 0.7rem;
     font-size: 0.83rem;
   }
 
-  .post-table thead th {
+  .post-table thead th,
+  article#post-content > table thead th {
     font-size: 0.66rem;
+    letter-spacing: 0.04em;
   }
 
   .post-table figcaption {
     font-size: 0.74rem;
+  }
+}
+
+/* Print: ensure tables render legibly on paper */
+@media print {
+  .post-table,
+  article#post-content > table {
+    box-shadow: none;
+    border: 1px solid #c8c2b6;
+    background: #fff;
+    page-break-inside: avoid;
+  }
+
+  .post-table thead th,
+  article#post-content > table thead th {
+    position: static;
+    background: #eee6d8;
+    color: #222;
   }
 }
 
@@ -354,41 +496,41 @@ blockquote > * {
   opacity: 0.8;
 }
 
-/* Chroma token color overrides for class-based highlighting (light theme) */
+/* Chroma token color overrides for class-based highlighting (dark theme) */
 /* Base */
-.chroma { color: #24292e; }
+.chroma { color: #f8f8f2; }
 /* Comments */
-.chroma .c, .chroma .c1, .chroma .cm, .chroma .cp, .chroma .cs { color: #6a737d; }
+.chroma .c, .chroma .c1, .chroma .cm, .chroma .cp, .chroma .cs { color: #6272a4; }
 /* Keywords */
-.chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt { color: #6f42c1; }
+.chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt { color: #ff79c6; }
 /* Keyword constants (true, false, null, etc.) */
-.chroma .kc { color: #e36209; }
+.chroma .kc { color: #bd93f9; }
 /* Strings */
-.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .s1, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sr, .chroma .ss { color: #22863a; }
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .s1, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sr, .chroma .ss { color: #f1fa8c; }
 /* Escape sequences */
-.chroma .se { color: #e36209; }
+.chroma .se { color: #ffb86c; }
 /* Numbers */
-.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: #005cc5; }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: #bd93f9; }
 /* Functions */
-.chroma .nf { color: #005cc5; }
+.chroma .nf { color: #50fa7b; }
 /* Classes / namespaces */
-.chroma .nc, .chroma .nn { color: #6f42c1; }
+.chroma .nc, .chroma .nn { color: #8be9fd; }
 /* Attributes */
-.chroma .na { color: #0a7aa1; }
+.chroma .na { color: #50fa7b; }
 /* Builtins */
-.chroma .nb { color: #005cc5; }
+.chroma .nb { color: #8be9fd; }
 /* Constants */
-.chroma .no { color: #e36209; }
+.chroma .no { color: #bd93f9; }
 /* Tags (HTML, XML) */
-.chroma .nt { color: #e36209; }
+.chroma .nt { color: #ff79c6; }
 /* Variables */
-.chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi { color: #24292e; }
+.chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi { color: #f8f8f2; }
 /* Decorators / annotations */
-.chroma .nd { color: #6f42c1; }
+.chroma .nd { color: #50fa7b; }
 /* Operators and punctuation */
-.chroma .o, .chroma .ow, .chroma .p { color: #24292e; }
+.chroma .o, .chroma .ow, .chroma .p { color: #ff79c6; }
 /* Errors (rare, keep minimal red) */
-.chroma .err { color: #b31d28; background-color: #ffeef0; }
+.chroma .err { color: #f8f8f2; background-color: #ff5555; }
 
 p a {
   text-decoration: underline;
